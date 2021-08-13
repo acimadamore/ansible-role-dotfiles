@@ -1,0 +1,24 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+
+  pre_tasks:
+    - name: Gather package facts
+      package_facts:
+
+        tasks:
+          - name: Test if packages are installed
+            assert:
+              that: item in ansible_facts.packages
+            with_items:
+              - fail2ban
+              - nullmailer
+
+          - name: Test if services are running
+            assert:
+              that: ansible_facts.services[item].state == 'running'
+            with_items:
+              - fail2ban

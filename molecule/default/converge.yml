@@ -3,3 +3,9 @@
   hosts: all
   roles:
     - role: ansible-role-dotfiles
+  pre_tasks:
+    - name: Ensure git is installed
+      ansible.builtin.apt:
+        name: git
+        state: present
+        update_cache: true

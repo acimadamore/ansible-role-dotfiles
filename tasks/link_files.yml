@@ -1,0 +1,15 @@
+---
+- name: Delete regular files from home
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ home_regular_files.files }}"
+
+- name: Link dotfiles into home
+  ansible.builtin.file:
+    src: "{{ item.path }}"
+    dest: "{{ dotfiles_home }}/.{{ item.path | basename }}"
+    state: link
+  with_items: "{{ dotfiles.files | selectattr('isreg') }}"
+  loop_control:
+    label: "{{ item.path }}"

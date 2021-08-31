@@ -1,0 +1,19 @@
+---
+- name: Define dotfiles
+  ansible.builtin.find:
+    paths: "{{ dotfiles_repository_path }}"
+    file_type: any
+    use_regex: yes
+    excludes: "{{ dotfiles_exclude }}"
+  register: dotfiles
+
+- name: Define home_filenames
+  ansible.builtin.set_fact:
+    home_filenames: "{{ ['.'] | product(dotfiles.files | selectattr('isreg') | map(attribute='path') | map('basename')) | map('join', '') }}"
+
+- name: Define home_regular_files
+  ansible.builtin.find:
+    paths: "{{ dotfiles_home }}"
+    hidden: yes
+    patterns: "{{ home_filenames }}"
+  register: home_regular_files

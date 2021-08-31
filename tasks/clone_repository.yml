@@ -1,0 +1,6 @@
+---
+- name: Ensure the dotfiles repository is present
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repository }}"
+    dest: "{{ dotfiles_repository_path }}"
+    version: "{{ dotfiles_repository_version }}"

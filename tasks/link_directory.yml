@@ -1,0 +1,34 @@
+---
+- name: Create directory in home
+  ansible.builtin.file:
+    path: "{{ dotfiles_home }}/.{{ dotfiles_directory.path | basename }}"
+    state: directory
+
+- name: Define dotfiles_directory_files
+  ansible.builtin.find:
+    paths: "{{ dotfiles_directory.path }}"
+    use_regex: yes
+  register: dotfiles_directory_files
+
+- name: Define home_directory_regular_files
+  ansible.builtin.find:
+    paths: "{{ dotfiles_home }}/.{{ dotfiles_directory.path | basename }}"
+    use_regex: yes
+    patterns: "{{ dotfiles_directory_files.files | selectattr('isreg') | map(attribute='path') | map('basename') }}"
+  register: home_directory_regular_files
+
+- name: Delete home_directory_regular_files
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ home_directory_regular_files.files }}"
+
+- name: Link dotfiles_directory_files into home/directory
+  ansible.builtin.file:
+    src: "{{ file.path }}"
+    dest: "{{ dotfiles_home }}/.{{ dotfiles_directory.path | basename }}/{{ file.path | basename }}"
+    state: link
+  with_items: "{{ dotfiles_directory_files.files }}"
+  loop_control:
+    label: "{{ file.path }}"
+    loop_var: file

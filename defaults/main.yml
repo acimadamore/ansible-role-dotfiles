@@ -1,2 +1,13 @@
 ---
-# defaults file for ansible-role-dotfiles
+
+dotfiles_repository: ''
+
+dotfiles_repository_version: master
+
+dotfiles_repository_path: "~/dotfiles"
+
+dotfiles_home: "~"
+
+dotfiles_exclude:
+  - README.md
+  - LICENSE.md

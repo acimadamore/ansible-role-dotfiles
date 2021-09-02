@@ -9,6 +9,7 @@
 
 - name: Define home_filenames
   ansible.builtin.set_fact:
+    # https://i.giphy.com/cNZmQ1qfjIZa4Xr3VE.gif
     home_filenames: "{{ ['.'] | product(dotfiles.files | selectattr('isreg') | map(attribute='path') | map('basename')) | map('join', '') }}"
 
 - name: Define home_regular_files

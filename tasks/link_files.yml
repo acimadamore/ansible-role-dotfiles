@@ -1,11 +1,11 @@
 ---
-- name: Delete regular files from home
+- name: Delete regular files from {{ dotfiles_home }}/
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ home_regular_files.files }}"
 
-- name: Link dotfiles into home
+- name: Link dotfiles into {{ dotfiles_home }}/
   ansible.builtin.file:
     src: "{{ item.path }}"
     dest: "{{ dotfiles_home }}/.{{ item.path | basename }}"

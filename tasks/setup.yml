@@ -3,18 +3,18 @@
   ansible.builtin.find:
     paths: "{{ dotfiles_repository_path }}"
     file_type: any
-    use_regex: yes
+    use_regex: true
     excludes: "{{ dotfiles_exclude }}"
   register: dotfiles
 
 - name: Define home_filenames
   ansible.builtin.set_fact:
     # https://i.giphy.com/cNZmQ1qfjIZa4Xr3VE.gif
-    home_filenames: "{{ ['.'] | product(dotfiles.files | selectattr('isreg') | map(attribute='path') | map('basename')) | map('join', '') }}"
+    home_filenames: "{{ ['.'] | product(dotfiles.files | selectattr('isreg') | map(attribute='path') | map('basename')) | map('join', '') }}" # yamllint disable-line
 
 - name: Look for regular files in {{ dotfiles_home }}
   ansible.builtin.find:
     paths: "{{ dotfiles_home }}"
-    hidden: yes
+    hidden: true
     patterns: "{{ home_filenames }}"
   register: home_regular_files

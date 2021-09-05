@@ -1,7 +1,7 @@
 Ansible Role - Dotfiles
 ========================
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-raspberry--pi-blue)](https://galaxy.ansible.com/acimadamore/dotfiles)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-dotfiles-blue)](https://galaxy.ansible.com/acimadamore/dotfiles)
 
 Install dotfiles from a Git repository in any UNIX like system.
 

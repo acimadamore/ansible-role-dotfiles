@@ -1,38 +1,89 @@
-Role Name
-=========
+Ansible Role - Dotfiles
+========================
 
-A brief description of the role goes here.
+Install dotfiles from a Git repository in any UNIX like system.
+
+This role links all files and directories of the given repository(see below how to exclude files). Directories are not linked recursively, given a directory _dir_ a directory _.dir_ is created and all the regular files inside of it are linked.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Git must be installed on the managed host.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Available variables are listed below, along with default values (see `defaults/main.yml`):
+
+    dotfiles_repository: ''
+
+This variable is **required**. The git respository of the dotfiles to retrieve.
+
+    dotfiles_repository_version: master
+
+Tag, branch or commit of the git repository to use.
+
+    dotfiles_repository_path: "~/dotfiles"
+
+The local path where the `dotfiles_repository` will be cloned.
+
+    dotfiles_home: "~"
+
+The directory where dotfiles will be linked. Keep in mind that the existing files on this directory are deleted before linking with dotfiles in `rdotfiles_repository_path`. Back up this files previously if necessary.
+
+    dotfiles_exclude:
+      - README.md
+      - LICENSE.md
+
+A list of dotfiles that will be skipped from being linked. Regular expressions can be used. For files inside a directory, the pattern should be prefixed with the directory's name separated by a slash, for instance the pattern `vim/^not-link-\w*.conf$` excludes from linking all files from _vim_ directory that begin with _not-link_ and end with _.conf_.
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Basic usage example:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+---
+- hosts: localhost
+  connection: local
+  vars:
+    dotfiles_repository: 'https://github.com/acimadamore/dotfiles'
+  roles:
+    - acimadamore.dotfiles
+```
+
+Full example:
+
+```yaml
+- hosts: localhost
+  connection: local
+  roles:
+    - role: acimadamore.dotfiles
+      vars:
+        dotfiles_repository: 'https://github.com/acimadamore/dotfiles'
+        dotfiles_repository_version: 1.1
+        dotfiles_repository_path: '~/projects/dotfiles'
+        dotfiles_home: '~'
+        dotfiles_exclude:
+          - README.md
+          - LICENSE.md
+          - \w*.rc
+          - ssh/config
+          - vim/
+```
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+This role was created in 2021 by Andres Cimadamore.

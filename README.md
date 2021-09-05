@@ -75,7 +75,6 @@ Full example:
           - LICENSE.md
           - \w*.rc
           - ssh/config
-          - vim/
 ```
 
 License

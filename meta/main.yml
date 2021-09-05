@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: dotfiles
   author: acimadamore
   description: Dotfiles installation for UNIX like systems
   license: MIT

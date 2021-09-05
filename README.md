@@ -1,6 +1,8 @@
 Ansible Role - Dotfiles
 ========================
 
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-raspberry--pi-blue)](https://galaxy.ansible.com/acimadamore/dotfiles)
+
 Install dotfiles from a Git repository in any UNIX like system.
 
 This role links all files and directories of the given repository(see below how to exclude files). Directories are not linked recursively, given a directory _dir_ a directory _.dir_ is created and all the regular files inside of it are linked.

@@ -1,0 +1,26 @@
+---
+- name: Define dotfiles_directory_name
+  ansible.builtin.set_fact:
+    dotfiles_directory_name: "{{ dotfiles_directory.path | basename }}"
+
+- name: Define dotfiles_directory_regex
+  ansible.builtin.set_fact:
+    dotfiles_directory_regex: "^{{ dotfiles_directory_name }}/(.*)$"
+
+- name: Define dotfiles_directory_excludes
+  ansible.builtin.set_fact:
+    dotfiles_directory_excludes: "{{ dotfiles_exclude | map('regex_search', dotfiles_directory_regex, '\\1') | select('sequence') | flatten }}"
+
+- name: Look for dotfiles in {{ dotfiles_directory.path }}
+  ansible.builtin.find:
+    paths: "{{ dotfiles_directory.path }}"
+    use_regex: yes
+    excludes: "{{ dotfiles_directory_excludes }}"
+  register: dotfiles_directory_files
+
+- name: Look for regular files in {{ dotfiles_home }}/.{{ dotfiles_directory_name }}
+  ansible.builtin.find:
+    paths: "{{ dotfiles_home }}/.{{ dotfiles_directory_name }}"
+    use_regex: yes
+    patterns: "{{ dotfiles_directory_files.files | selectattr('isreg') | map(attribute='path') | map('basename') }}"
+  register: home_directory_regular_files

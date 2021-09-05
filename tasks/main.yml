@@ -2,7 +2,7 @@
 
 - import_tasks: clone_repository.yml
 
-- import_tasks: variables.yml
+- import_tasks: setup.yml
 
 - import_tasks: link_files.yml
 
